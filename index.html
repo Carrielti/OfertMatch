@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD MongoDB - Flask</title>
+    <style>
+        /* Mantenha o mesmo CSS anterior */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-section, .data-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            margin-bottom: 10px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d35400;
+        }
+
+        .user-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .user-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .user-card p {
+            margin-bottom: 8px;
+            color: #6c757d;
+        }
+
+        .user-id {
+            font-family: monospace;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #495057;
+        }
+
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 CRUD MongoDB</h1>
+            <p>Interface completa para testar operações no banco de dados</p>
+        </div>
+
+        <div class="content">
+            <!-- Formulários -->
+            <div class="form-section">
+                <h2 class="section-title">📝 Operações CRUD</h2>
+                
+                <!-- Criar Usuário -->
+                <div class="form-group">
+                    <h3>➕ Criar Usuário</h3>
+                    <input type="text" id="name" placeholder="Nome" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="number" id="age" placeholder="Idade">
+                    <button class="btn btn-primary" onclick="createUser()">Criar Usuário</button>
+                </div>
+
+                <!-- Buscar Usuário -->
+                <div class="form-group">
+                    <h3>🔍 Buscar por ID</h3>
+                    <input type="text" id="searchId" placeholder="ID do usuário">
+                    <button class="btn btn-success" onclick="getUser()">Buscar Usuário</button>
+                </div>
+
+                <!-- Atualizar Usuário -->
+                <div class="form-group">
+                    <h3>✏️ Atualizar Usuário</h3>
+                    <input type="text" id="updateId" placeholder="ID do usuário">
+                    <input type="text" id="updateName" placeholder="Novo nome">
+                    <input type="email" id="updateEmail" placeholder="Novo email">
+                    <input type="number" id="updateAge" placeholder="Nova idade">
+                    <button class="btn btn-warning" onclick="updateUser()">Atualizar Usuário</button>
+                </div>
+
+                <!-- Deletar Usuário -->
+                <div class="form-group">
+                    <h3>🗑️ Deletar Usuário</h3>
+                    <input type="text" id="deleteId" placeholder="ID do usuário">
+                    <button class="btn btn-danger" onclick="deleteUser()">Deletar Usuário</button>
+                </div>
+
+                <!-- Listar Todos -->
+                <div class="form-group">
+                    <h3>📋 Listar Todos</h3>
+                    <button class="btn btn-primary" onclick="getAllUsers()">Carregar Todos os Usuários</button>
+                </div>
+            </div>
+
+            <!-- Dados -->
+            <div class="data-section">
+                <h2 class="section-title">👥 Usuários</h2>
+                <div id="message"></div>
+                <div id="usersList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar mensagens
+        function showMessage(text, type = 'success') {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="message ${type}">${text}</div>`;
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Função para escapar HTML (segurança)
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // 📝 CREATE - Criar usuário
+        async function createUser() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const age = document.getElementById('age').value;
+
+            if (!name || !email) {
+                showMessage('Nome e email são obrigatórios!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        age: age || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.message);
+                    document.getElementById('name').value = '';
+                    document.getElementById('email').value = '';
+                    document.getElementById('age').value = '';
+                    getAllUsers(); // Atualiza a lista
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao criar usuário: ' + error, 'error');
+            }
+        }
+
+        // 📖 READ - Buscar todos os usuários
+        async function getAllUsers() {
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = '<div class="loading">Carregando...</div>';
+
+            try {
+                const response = await fetch('/api/users');
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.users.length === 0) {
+                        usersList.innerHTML = '<div class="message">Nenhum usuário encontrado</div>';
+                    } else {
+                        usersList.innerHTML = data.users.map(user => {
+                            const safeName = escapeHtml(user.name);
+                            const safeEmail = escapeHtml(user.email);
+                            const safeAge = user.age ? user.age : 'Não informada';
+                            const safeCreatedAt = escapeHtml(user.created_at);
+                            const safeId = escapeHtml(user._id);
+                            
+                            return `
+                                <div class="user-card">
+                                    <h3>${safeName}</h3>
+                                    <p><strong>Email:</strong> ${safeEmail}</p>
+                                    <p><strong>Idade:</strong> ${safeAge}</p>
+                                    <p><strong>Criado em:</strong> ${safeCreatedAt}</p>
+                                    <div class="user-id">ID: ${safeId}</div>
+                                    <div class="actions">
+                                        <button class="btn btn-warning" onclick="fillUpdateForm('${safeId}', '${safeName}', '${safeEmail}', '${safeAge}')">
+                                            Editar
+                                        </button>
+                                        <button class="btn btn-danger" onclick="confirmDelete('${safeId}', '${safeName}')">
+                                            Deletar
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao carregar usuários: ' + error, 'error');
+            }
+        }
+
+        // 🔍 READ - Buscar usuário por ID
+        async function getUser() {
+            const userId = document.getElementById('searchId').value.trim();
+
+            if (!userId) {
+                showMessage('Digite um ID para buscar!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/users/${userId}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    const usersList = document.getElementById('usersList');
+                    const safeName = escapeHtml(data.name);
+                    const safeEmail = escapeHtml(data.email);
+                    const safeAge = data.age ? data.age : 'Não informada';
+                    const safeCreatedAt = escapeHtml(data.created_at);
+                    const safeId = escapeHtml(data._id);
+                    
+                    usersList.innerHTML = `
+                        <div class="user-card">
+                            <h3>${safeName}</h3>
+                            <p><strong>Email:</strong> ${safeEmail}</p>
+                            <p><strong>Idade:</strong> ${safeAge}</p>
+                            <p><strong>Criado em:</strong> ${safeCreatedAt}</p>
+                            <div class="user-id">ID: ${safeId}</div>
+                            <div class="actions">
+                                <button class="btn btn-warning" onclick="fillUpdateForm('${safeId}', '${safeName}', '${safeEmail}', '${safeAge}')">
+                                    Editar
+                                </button>
+                                <button class="btn btn-danger" onclick="confirmDelete('${safeId}', '${safeName}')">
+                                    Deletar
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao buscar usuário: ' + error, 'error');
+            }
+        }
+
+        // ✏️ UPDATE - Atualizar usuário
+        async function updateUser() {
+            const userId = document.getElementById('updateId').value.trim();
+            const name = document.getElementById('updateName').value;
+            const email = document.getElementById('updateEmail').value;
+            const age = document.getElementById('updateAge').value;
+
+            if (!userId) {
+                showMessage('Digite um ID para atualizar!', 'error');
+                return;
+            }
+
+            const updateData = {};
+            if (name) updateData.name = name;
+            if (email) updateData.email = email;
+            if (age) updateData.age = parseInt(age);
+
+            if (Object.keys(updateData).length === 0) {
+                showMessage('Digite pelo menos um campo para atualizar!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/users/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updateData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.message);
+                    document.getElementById('updateId').value = '';
+                    document.getElementById('updateName').value = '';
+                    document.getElementById('updateEmail').value = '';
+                    document.getElementById('updateAge').value = '';
+                    getAllUsers(); // Atualiza a lista
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao atualizar usuário: ' + error, 'error');
+            }
+        }
+
+        // 🗑️ DELETE - Deletar usuário
+        async function deleteUser() {
+            const userId = document.getElementById('deleteId').value.trim();
+
+            if (!userId) {
+                showMessage('Digite um ID para deletar!', 'error');
+                return;
+            }
+
+            if (!confirm('Tem certeza que deseja deletar este usuário?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/users/${userId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.message);
+                    document.getElementById('deleteId').value = '';
+                    getAllUsers(); // Atualiza a lista
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao deletar usuário: ' + error, 'error');
+            }
+        }
+
+        // Funções auxiliares
+        function fillUpdateForm(id, name, email, age) {
+            document.getElementById('updateId').value = id;
+            document.getElementById('updateName').value = name;
+            document.getElementById('updateEmail').value = email;
+            
+            // Corrigir o tratamento da idade
+            const ageValue = (age === 'Não informada' || age === 'null') ? '' : age;
+            document.getElementById('updateAge').value = ageValue;
+            
+            // Scroll para o formulário de update
+            document.getElementById('updateName').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function confirmDelete(id, name) {
+            const safeName = escapeHtml(name);
+            if (confirm(`Tem certeza que deseja deletar o usuário "${safeName}"?`)) {
+                document.getElementById('deleteId').value = id;
+                deleteUser();
+            }
+        }
+
+        // Carregar usuários ao iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            getAllUsers();
+        });
+    </script>
+</body>
+</html>
