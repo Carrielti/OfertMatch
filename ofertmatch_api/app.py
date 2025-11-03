@@ -158,4 +158,6 @@ def health():                                          # Inicia handler da rota 
     return jsonify({"ok": True, "service": "ofertmatch-api"})  # Retorna status OK e nome do serviço
 
 if __name__ == "__main__":                             # Garante execução apenas se este arquivo for o principal
-    app.run(host="0.0.0.0", port=5000)                 # Sobe o servidor Flask acessível na rede local, porta 5000
+    import os
+    port = int(os.environ.get("PORT", 5000))                 # Sobe o servidor Flask acessível na rede local, porta 5000
+    app.run(host="0.0.0.0", port=port)
