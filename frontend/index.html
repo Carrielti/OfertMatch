@@ -1,198 +1,170 @@
-<!DOCTYPE html> <!-- Diz ao navegador que é HTML5 -->
-<html lang="pt-BR"> <!-- Idioma do documento (ajuda leitor de tela/SEO) -->
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" /> <!-- Codificação correta de acentos -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Responsivo -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OfertMatch Empresas</title>
-  <link rel="stylesheet" href="style.css" /> <!-- Conecta o CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <!-- ====== MENU LATERAL (drawer) ====== -->
-  <!-- role="navigation": identifica como navegação -->
-  <!-- aria-label: nomeia a navegação para leitores de tela -->
-<nav class="menu-lateral" id="menuLateral" role="navigation" aria-label="Menu lateral">
-  <img src="img/Logo_Menor.png" alt="OfertMatch" class="logo_menu" />
+  <!-- ===== MENU LATERAL ===== -->
+  <nav class="menu-lateral" id="menuLateral" role="navigation" aria-label="Menu lateral">
+    <img src="img/Logo_Menor.png" alt="OfertMatch" class="logo_menu" />
+    <ul>
+      <li>
+        <a href="index.html" class="active">
+          <img src="img/icon_home.png" alt="" class="icons_menu">
+          <span>Início</span>
+        </a>
+      </li>
+      <li>
+        <a href="cadastro_produtos.html">
+          <img src="img/icon_cadastro_produtos.png" alt="" class="icons_menu">
+          <span>Cadastro de Produtos</span>
+        </a>
+      </li>
+      <li>
+        <a href="lista_produtos.html">
+          <img src="img/icon_lista_produtos.png" alt="" class="icons_menu">
+          <span>Lista de Produtos</span>
+        </a>
+      </li>
+      <li>
+        <a href="promocao.html">
+          <img src="img/icon_promocao.png" alt="" class="icons_menu">
+          <span>Inserir Promoção</span>
+        </a>
+      </li>
+      <li>
+        <a href="endereco.html">
+          <img src="img/icon_localizacao.png" alt="" class="icons_menu">
+          <span>Endereço</span>
+        </a>
+      </li>
+      <li>
+        <a href="sobre.html">
+          <img src="img/icon_sobre.png" alt="" class="icons_menu">
+          <span>Sobre</span>
+        </a>
+      </li>
+      <li>
+        <a href="contato.html">
+          <img src="img/icon_contato.png" alt="" class="icons_menu">
+          <span>Contato</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
-  <ul>
-    <li>
-  <a href="index.html" class="active">
-    <img src="img/icon_home.png" alt="" class="icons_menu">
-    <span>Início</span>
-  </a>
-</li>
-
-    <li>
-      <a href="cadastro_produtos.html">
-        <img src="img/icon_cadastro_produtos.png" alt="" class="icons_menu">
-        <span>Cadastro de Produtos</span>
-      </a>
-    </li>
-    <li>
-      <a href="lista_produtos.html">
-        <img src="img/icon_lista_produtos.png" alt="" class="icons_menu">
-        <span>Lista de Produtos</span>
-      </a>
-    </li>
-    <li>
-      <a href="promocao.html">
-        <img src="img/icon_promocao.png" alt="" class="icons_menu" >
-        <span>Inserir Promoção</span>
-      </a>
-    </li>
-    <li>
-      <a href="endereco.html">
-        <img src="img/icon_localizacao.png" alt="" class="icons_menu">
-        <span>Endereço</span>
-      </a>
-    </li>
-    <li>
-      <a href="sobre.html">
-        <img src="img/icon_sobre.png" alt="" class="icons_menu">
-        <span>Sobre</span>
-      </a>
-    </li>
-    <li>
-      <a href="contato.html">
-        <img src="img/icon_contato.png" alt="" class="icons_menu">
-        <span>Contato</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-
-
-  <!-- ====== FUNDO ESCURO DO MENU ====== -->
-  <!-- Fica por cima do conteúdo e abaixo do menu (z-index no CSS) -->
   <div class="overlay" id="overlay" aria-hidden="true"></div>
 
-  <!-- ====== CABEÇALHO ====== -->
+  <!-- ===== HEADER ===== -->
   <header>
-
-    
-    <!-- Botão que abre/fecha o menu -->
-    <!-- aria-controls vincula ao id do menu; aria-expanded diz se está aberto -->
     <button id="btnMenu" aria-controls="menuLateral" aria-expanded="false" aria-label="Abrir menu lateral">☰</button>
-
-    <!-- Logo (pode trocar por <img src="logo.svg">) -->
     <img src="img/Logo_Menor.png" alt="OfertMatch" class="logo" />
-
-    <!-- Botão configurações (sem ação por enquanto) -->
     <button id="btnConfig" aria-label="Abrir configurações">⚙</button>
   </header>
 
-  <!-- Barra de busca (opcional) -->
+  <!-- Barra de busca -->
   <div class="top-search" role="search">
     <span class="search-ico">🔎</span>
     <input type="search" placeholder="Buscar produtos, empresas ou ofertas…" aria-label="Buscar" />
   </div>
 
-
-  <!-- ====== CONTEÚDO PRINCIPAL ====== -->
+  <!-- ===== CONTEÚDO ===== -->
   <main>
-    <!-- Mensagem de boas-vindas -->
-    <!-- HERO (boas-vindas estilo mockup) -->
-  <section class="hero">
-    <!-- mini logo à esquerda, como no mockup -->
-    <img class="hero-brand" src="img/Logo_Menor_Sem_Fundo.png" alt="OfertMatch" />
+    <section class="hero">
+      <img class="hero-brand" src="img/Logo_Menor_Sem_Fundo.png" alt="OfertMatch" />
+      <div class="hero-card" role="region" aria-label="Boas-vindas">
+        <h1>Bem-vindo(a) ao OfertMatch Empresas!</h1>
+        <p>Comece a gerenciar seus produtos agora mesmo.</p>
+      </div>
+    </section>
 
-    <!-- cartão escuro com mensagem -->
-    <div class="hero-card" role="region" aria-label="Boas-vindas">
-      <h1>Bem-vindo(a) ao OfertMatch Empresas!</h1>
-      <p>Comece a gerenciar seus produtos agora mesmo.</p>
-    </div>
-  </section>
-
-
-    <!-- Cards de ação -->
     <section class="acoes" aria-label="Ações rápidas">
-      <!-- Cada card é um botão (semântica acessível) -->
       <button class="card" type="button" data-open="modalEmpresa" aria-haspopup="dialog" aria-controls="modalEmpresa">
-        <img src="img/Cadastro_Empresas.png" alt="Empresa" aria-hidden="true" />
+        <img src="img/Cadastro_Empresas.png" alt="" aria-hidden="true" />
         <p>Cadastrar Empresa</p>
       </button>
-
       <button class="card" type="button" data-open="modalProduto" aria-haspopup="dialog" aria-controls="modalProduto">
         <img src="img/Cadastro_Produtos.png" alt="" aria-hidden="true" />
         <p>Cadastrar Produto</p>
       </button>
-
       <button class="card" type="button" data-open="modalOferta" aria-haspopup="dialog" aria-controls="modalOferta">
         <img src="img/Cadastro_Ofertas.png" alt="" aria-hidden="true" />
         <p>Cadastrar Ofertas</p>
       </button>
     </section>
-    <!-- ===== LISTAS (visualização rápida) ===== -->
-  <section class="listas" aria-label="Registros salvos">
-  <h2>Registros</h2>
 
-  <div class="lista-controles">
-    <button id="btnVerEmpresas" type="button">Ver Empresas</button>
-    <button id="btnVerProdutos"  type="button">Ver Produtos</button>
-    <button id="btnVerOfertas"   type="button">Ver Ofertas</button>
-  </div>
+    <section class="listas" aria-label="Registros salvos">
+      <h2>Registros</h2>
+      <div class="lista-controles">
+        <button id="btnVerEmpresas" type="button">Ver Empresas</button>
+        <button id="btnVerProdutos"  type="button">Ver Produtos</button>
+        <button id="btnVerOfertas"   type="button">Ver Ofertas</button>
+      </div>
 
-  <!-- Tabela de EMPRESAS -->
-  <div id="boxEmpresas" class="box-lista" hidden>
-    <table class="om-table">
-      <thead>
-        <tr>
-          <th>Razão social</th>
-          <th>CNPJ</th>
-          <th>Endereço</th>
-          <th>E-mail</th>
-          <th>Responsável</th>
-        </tr>
-      </thead>
-      <tbody id="tbodyEmpresas">
-        <!-- linhas adicionadas via JS -->
-      </tbody>
-    </table>
-  </div>
+      <!-- EMPRESAS -->
+      <div id="boxEmpresas" class="box-lista" hidden>
+        <table class="om-table">
+          <thead>
+            <tr>
+              <th>Razão social</th>
+              <th>CNPJ</th>
+              <th>Endereço</th>
+              <th>E-mail</th>
+              <th>Responsável</th>
+              <th style="width:120px">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyEmpresas"></tbody>
+        </table>
+      </div>
 
-  <!-- Tabela de PRODUTOS -->
-  <div id="boxProdutos" class="box-lista" hidden>
-    <table class="om-table">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Código</th>
-          <th>Estoque</th>
-          <th>Categoria</th>
-          <th>Marca</th>
-          <th>Valor</th>
-          <th>Validade</th>
-        </tr>
-      </thead>
-      <tbody id="tbodyProdutos"></tbody>
-    </table>
-  </div>
+      <!-- PRODUTOS -->
+      <div id="boxProdutos" class="box-lista" hidden>
+        <table class="om-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Código</th>
+              <th>Estoque</th>
+              <th>Categoria</th>
+              <th>Marca</th>
+              <th>Valor</th>
+              <th>Validade</th>
+              <th style="width:120px">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyProdutos"></tbody>
+        </table>
+      </div>
 
-  <!-- Tabela de OFERTAS -->
-  <div id="boxOfertas" class="box-lista" hidden>
-    <table class="om-table">
-      <thead>
-        <tr>
-          <th>Produto</th>
-          <th>Marca</th>
-          <th>Código</th>
-          <th>Estoque</th>
-          <th>Categoria</th>
-          <th>Valor</th>
-          <th>Validade</th>
-          <th>Início</th>
-          <th>Fim</th>
-        </tr>
-      </thead>
-      <tbody id="tbodyOfertas"></tbody>
-    </table>
-  </div>
-  </section>
-
+      <!-- OFERTAS -->
+      <div id="boxOfertas" class="box-lista" hidden>
+        <table class="om-table">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Marca</th>
+              <th>Código</th>
+              <th>Estoque</th>
+              <th>Categoria</th>
+              <th>Valor</th>
+              <th>Validade</th>
+              <th>Início</th>
+              <th>Fim</th>
+              <th style="width:120px">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyOfertas"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
-  <!-- ===== MODAL: EMPRESA ===== -->
-  <!-- role="dialog" + aria-modal: modal real; aria-labelledby aponta pro título -->
+  <!-- ===== MODAIS ===== -->
+  <!-- EMPRESA -->
   <div class="modal" id="modalEmpresa" role="dialog" aria-modal="true" aria-labelledby="tituloModalEmpresa" aria-hidden="true">
     <div class="modal-content">
       <h2 id="tituloModalEmpresa">
@@ -200,12 +172,33 @@
         <button class="fechar" data-modal="modalEmpresa" aria-label="Fechar modal">X</button>
       </h2>
 
-      <form>
-        <input type="text" placeholder="Razão social" />
-        <input type="text" placeholder="CNPJ" />
-        <input type="text" placeholder="Endereço" />
-        <input type="email" placeholder="E-mail empresarial" />
-        <input type="text" placeholder="Responsável" />
+      <form id="formEmpresa" class="form" data-mode="create" data-id="">
+        <div class="form-group">
+          <label for="emp_razao">Razão social:</label>
+          <input id="emp_razao" data-field="razao_social" name="razao_social" placeholder="Razão social" required>
+        </div>
+
+        <div class="form-group">
+          <label for="emp_cnpj">CNPJ</label>
+          <input id="emp_cnpj" data-field="cnpj" name="cnpj" placeholder="00.000.000/0000-00" maxlength="18" required>
+          <small class="field-error" data-error-for="cnpj"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="emp_end">Endereço</label>
+          <input id="emp_end" data-field="endereco" name="endereco" placeholder="Endereço" required>
+        </div>
+
+        <div class="form-group">
+          <label for="emp_email">E-mail empresarial</label>
+          <input id="emp_email" data-field="email" name="email" type="email" placeholder="E-mail empresarial" required>
+          <small class="field-error" data-error-for="email"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="emp_resp">Responsável</label>
+          <input id="emp_resp" data-field="responsavel" name="responsavel" placeholder="Responsável" required>
+        </div>
 
         <div class="botoes">
           <button type="button" class="cancelar" data-modal="modalEmpresa">Cancelar</button>
@@ -215,7 +208,7 @@
     </div>
   </div>
 
-  <!-- ===== MODAL: PRODUTO ===== -->
+  <!-- PRODUTO -->
   <div class="modal" id="modalProduto" role="dialog" aria-modal="true" aria-labelledby="tituloModalProduto" aria-hidden="true">
     <div class="modal-content">
       <h2 id="tituloModalProduto">
@@ -223,24 +216,52 @@
         <button class="fechar" data-modal="modalProduto" aria-label="Fechar modal">X</button>
       </h2>
 
-      <form>
-        <input type="text" placeholder="Produto" />
-        <input type="text" placeholder="Código de produto" />
-        <input type="number" placeholder="Estoque" />
-        <input type="text" placeholder="Categoria" />
-        <input type="text" placeholder="Marca" />
-        <input type="number" placeholder="Valor" />
-        <input type="date" placeholder="Validade" />
+    <form id="formProduto" class="form" data-mode="create" data-id="">
+      <div class="form-group">
+        <label for="prd_nome">Produto</label>
+        <input id="prd_nome" data-field="nome" name="nome" placeholder="Produto" required>
+      </div>
 
-        <div class="botoes">
-          <button type="button" class="cancelar" data-modal="modalProduto">Cancelar</button>
-          <button type="submit" class="salvar">Salvar</button>
-        </div>
-      </form>
+      <div class="form-group">
+        <label for="prd_codigo">Código</label>
+        <input id="prd_codigo" data-field="codigo" name="codigo" placeholder="Código de produto" required>
+      </div>
+
+      <div class="form-group">
+        <label for="prd_estoque">Estoque</label>
+        <input id="prd_estoque" data-field="estoque" name="estoque" type="number" min="0" step="1" placeholder="Estoque" required>
+      </div>
+
+      <div class="form-group">
+        <label for="prd_categoria">Categoria</label>
+        <input id="prd_categoria" data-field="categoria" name="categoria" placeholder="Categoria" required>
+      </div>
+
+      <div class="form-group">
+        <label for="prd_marca">Marca</label>
+        <input id="prd_marca" data-field="marca" name="marca" placeholder="Marca" required>
+      </div>
+
+      <div class="form-group">
+        <label for="prd_valor">Valor (R$)</label>
+        <input id="prd_valor" data-field="valor" name="valor" inputmode="decimal" placeholder="0,00" required>
+        <small class="field-error" data-error-for="valor"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="prd_validade">Validade (opcional)</label>
+        <input id="prd_validade" data-field="validade" name="validade" type="date" placeholder="Validade (opcional)">
+      </div>
+
+      <div class="botoes">
+        <button type="button" class="cancelar" data-modal="modalProduto">Cancelar</button>
+        <button type="submit" class="salvar">Salvar</button>
+      </div>
+    </form>
     </div>
   </div>
 
-  <!-- ===== MODAL: OFERTA ===== -->
+  <!-- OFERTA -->
   <div class="modal" id="modalOferta" role="dialog" aria-modal="true" aria-labelledby="tituloModalOferta" aria-hidden="true">
     <div class="modal-content">
       <h2 id="tituloModalOferta">
@@ -248,16 +269,55 @@
         <button class="fechar" data-modal="modalOferta" aria-label="Fechar modal">X</button>
       </h2>
 
-      <form>
-        <input type="text" placeholder="Produto" />
-        <input type="text" placeholder="Marca" />
-        <input type="text" placeholder="Código do produto" />
-        <input type="number" placeholder="Estoque" />
-        <input type="text" placeholder="Categoria" />
-        <input type="number" placeholder="Valor" />
-        <input type="date" placeholder="Validade" />
-        <input type="date" placeholder="Data início" />
-        <input type="date" placeholder="Data fim" />
+      <form id="formOferta" class="form" data-mode="create" data-id="">
+        <div class="form-group">
+          <label for="ofr_produto">Produto</label>
+          <input id="ofr_produto" data-field="produto" name="produto" placeholder="Produto" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ofr_marca">Marca</label>
+          <input id="ofr_marca" data-field="marca" name="marca" placeholder="Marca" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ofr_codigo">Código</label>
+          <input id="ofr_codigo" data-field="codigo" name="codigo" placeholder="Código do produto" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ofr_estoque">Estoque</label>
+          <input id="ofr_estoque" data-field="estoque" name="estoque" type="number" min="0" step="1" placeholder="Estoque" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ofr_categoria">Categoria</label>
+          <input id="ofr_categoria" data-field="categoria" name="categoria" placeholder="Categoria" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ofr_valor">Valor (R$)</label>
+          <input id="ofr_valor" data-field="valor" name="valor" inputmode="decimal" placeholder="0,00" required>
+          <small class="field-error" data-error-for="valor"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="ofr_validade">Validade (opcional)</label>
+          <input id="ofr_validade" data-field="validade" name="validade" type="date" placeholder="Validade (opcional)">
+          <small class="field-error" data-error-for="validade"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="ofr_inicio">Início da oferta</label>
+          <input id="ofr_inicio" data-field="data_inicio" name="data_inicio" type="date" placeholder="Início da oferta">
+          <small class="field-error" data-error-for="data_inicio"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="ofr_fim">Fim da oferta</label>
+          <input id="ofr_fim" data-field="data_fim" name="data_fim" type="date" placeholder="Fim da oferta">
+          <small class="field-error" data-error-for="data_fim"></small>
+        </div>
 
         <div class="botoes">
           <button type="button" class="cancelar" data-modal="modalOferta">Cancelar</button>
@@ -267,11 +327,7 @@
     </div>
   </div>
 
-  <!-- ===== TOAST (mensagem temporária) ===== -->
-    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
-
-
-  <!-- Conecta o JS (depois de todo o HTML) -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
   <script src="script.js"></script>
 </body>
 </html>
