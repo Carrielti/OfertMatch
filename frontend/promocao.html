@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OfertMatch — Inserir Promoção</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav class="menu-lateral" id="menuLateral" role="navigation" aria-label="Menu lateral">
+  <img src="img/Logo_Menor.png" alt="OfertMatch" class="logo_menu"/>
+  <ul>
+    <li><a href="index.html"><img src="img/icon_home.png" class="icons_menu"><span>Início</span></a></li>
+    <li><a href="lista_produtos.html"><img src="img/icon_lista_produtos.png" class="icons_menu"><span>Lista de Produtos</span></a></li>
+    <li><a href="lista_ofertas.html"><img src="img/icon_lista_produtos.png" class="icons_menu"><span>Lista de Ofertas</span></a></li>
+    <li><a href="promocao.html" class="active"><img src="img/icon_promocao.png" class="icons_menu"><span>Inserir Promoção</span></a></li>
+    <li><a href="endereco.html"><img src="img/icon_localizacao.png" class="icons_menu"><span>Endereço</span></a></li>
+    <li><a href="sobre.html"><img src="img/icon_sobre.png" class="icons_menu"><span>Sobre</span></a></li>
+    <li><a href="contato.html"><img src="img/icon_contato.png" class="icons_menu"><span>Contato</span></a></li>
+  </ul>
+</nav>
+<div class="overlay" id="overlay" aria-hidden="true"></div>
+
+<header>
+  <button id="btnMenu" aria-controls="menuLateral" aria-expanded="false" aria-label="Abrir menu lateral">☰</button>
+  <img src="img/Logo_Menor.png" alt="OfertMatch" class="logo"/>
+  <span id="api-status" style="font-size:14px;opacity:.8"></span>
+</header>
+
+<main style="max-width:680px;margin:24px auto;padding:0 16px">
+  <h2 style="color:#0d3b2e;margin-bottom:14px">Inserir Promoção</h2>
+
+  <div class="modal-content" style="margin:0 auto;box-shadow:none">
+    <form id="formOferta" class="form" data-mode="create" data-id="">
+      <div class="form-group">
+        <label for="ofr_produto">Produto</label>
+        <input id="ofr_produto" data-field="produto" name="produto" placeholder="Produto" required>
+      </div>
+
+      <div class="form-group">
+        <label for="ofr_marca">Marca</label>
+        <input id="ofr_marca" data-field="marca" name="marca" placeholder="Marca" required>
+      </div>
+
+      <div class="form-group">
+        <label for="ofr_codigo">Código</label>
+        <input id="ofr_codigo" data-field="codigo" name="codigo" placeholder="Código do produto" required>
+      </div>
+
+      <div class="form-group">
+        <label for="ofr_estoque">Estoque</label>
+        <input id="ofr_estoque" data-field="estoque" name="estoque" type="number" min="0" step="1" placeholder="Estoque" required>
+      </div>
+
+      <div class="form-group">
+        <label for="ofr_categoria">Categoria</label>
+        <input id="ofr_categoria" data-field="categoria" name="categoria" placeholder="Categoria" required>
+      </div>
+
+      <div class="form-group">
+        <label for="ofr_valor">Valor (R$)</label>
+        <input id="ofr_valor" data-field="valor" name="valor" inputmode="decimal" placeholder="0,00" required>
+        <small class="field-error" data-error-for="valor"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="ofr_validade">Validade (opcional)</label>
+        <input id="ofr_validade" data-field="validade" name="validade" type="date">
+        <small class="field-error" data-error-for="validade"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="ofr_inicio">Início da oferta</label>
+        <input id="ofr_inicio" data-field="data_inicio" name="data_inicio" type="date" required>
+        <small class="field-error" data-error-for="data_inicio"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="ofr_fim">Fim da oferta</label>
+        <input id="ofr_fim" data-field="data_fim" name="data_fim" type="date" required>
+        <small class="field-error" data-error-for="data_fim"></small>
+      </div>
+
+      <div class="botoes">
+        <button type="reset" class="cancelar">Limpar</button>
+        <button type="submit" class="salvar">Salvar</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+const BASE_URL = "https://ofertmatch.onrender.com";
+const ENDPOINTS = { ofertas: `${BASE_URL}/api/ofertas`, health: `${BASE_URL}/api/health` };
+
+const btnMenu=document.getElementById("btnMenu");
+const menuLateral=document.getElementById("menuLateral");
+const overlay=document.getElementById("overlay");
+let menuAberto=false;
+function abrirMenu(){ menuLateral.style.left="0"; overlay.style.display="block"; btnMenu?.setAttribute("aria-expanded","true"); menuAberto=true; }
+function fecharMenu(){ menuLateral.style.left="-250px"; overlay.style.display="none"; btnMenu?.setAttribute("aria-expanded","false"); menuAberto=false; }
+btnMenu?.addEventListener("click",()=> menuAberto?fecharMenu():abrirMenu());
+overlay?.addEventListener("click",fecharMenu);
+document.addEventListener("keydown",(e)=>{ if(e.key==="Escape"&&menuAberto){ fecharMenu(); btnMenu?.focus(); }});
+
+function mostrarToast(msg,tipo="sucesso"){ const t=document.getElementById("toast"); if(!t) return; t.className="toast"; t.classList.add(tipo); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2800); }
+function withTimeout(ms=20000){ const c=new AbortController(); const id=setTimeout(()=>c.abort("timeout"),ms); return {signal:c.signal,cancel:()=>clearTimeout(id)};}
+async function apiPost(url, body){
+  const t=withTimeout();
+  try{
+    const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body),signal:t.signal});
+    const txt=await r.text(); let j; try{ j=JSON.parse(txt);}catch{ j={ok:false,msg:txt||"Resposta não-JSON"}; }
+    if(!r.ok||j.ok===false) throw new Error(j.msg||`Erro HTTP ${r.status}`);
+    return j;
+  }catch(e){ console.error(e); mostrarToast(e?.name==="AbortError"?"Tempo esgotado (20s).":(e.message||"Falha ao enviar."),"erro"); return null; }
+  finally{ t.cancel(); }
+}
+async function checkApi(){ const el=document.getElementById("api-status"); if(!el) return; try{ const r=await fetch(ENDPOINTS.health); const j=await r.json(); el.textContent=j?.ok?"API online ✅":"API respondeu, verifique"; }catch{ el.textContent="API offline ⏳"; } }
+document.addEventListener("DOMContentLoaded", checkApi);
+
+/* máscaras/validações locais */
+const onlyDigits = (v='') => v.replace(/\D+/g,'');
+function maskCurrencyBR(v){
+  const d = onlyDigits(v).slice(0,12);
+  const pad = d.padStart(3,'0');
+  const inteiro = pad.slice(0,-2);
+  const cent = pad.slice(-2);
+  const inteiroFmt = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  return `${inteiroFmt},${cent}`;
+}
+function bindMaskValor(){
+  const inp = document.querySelector('[data-field="valor"]');
+  if(!inp) return;
+  inp.addEventListener("input", ()=>{
+    const start = inp.selectionStart, before = inp.value;
+    inp.value = maskCurrencyBR(inp.value);
+    const delta = inp.value.length - before.length;
+    const pos = Math.max(0, (start||0)+delta);
+    inp.setSelectionRange(pos,pos);
+  });
+}
+function parseISO(d){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d||"");
+  if(!m) return null;
+  const [_,y,mo,da]=m.map(Number);
+  const dt=new Date(y,mo-1,da);
+  return (dt && dt.getMonth()===mo-1 && dt.getDate()===da) ? dt : null;
+}
+function isPositiveMoneyBR(mask){
+  const n = Number((mask||'').replace(/\./g,'').replace(',','.'));
+  return !isNaN(n) && n > 0;
+}
+function setFieldError(formEl, field, msg){
+  const inp=formEl.querySelector(`[data-field="${field}"]`);
+  if(inp) inp.style.border = msg ? "2px solid #c0392b" : "2px solid #59e1a1";
+  const slot=formEl.querySelector(`[data-error-for="${field}"]`);
+  if(slot) slot.textContent = msg||"";
+}
+function clearFieldErrors(formEl){
+  formEl.querySelectorAll("[data-field]").forEach(i=> i.style.border="none");
+  formEl.querySelectorAll(".field-error").forEach(s=> s.textContent="");
+}
+function coerceValue(field, value){
+  if(field==="valor"){
+    const clean=(value||"").toString().replace(/\./g,'').replace(',','.');
+    const n=parseFloat(clean); return isNaN(n)?0:n;
+  }
+  if(field==="estoque"){ const n=parseInt(value,10); return isNaN(n)?0:n; }
+  return (value||"").trim();
+}
+
+document.addEventListener("DOMContentLoaded", bindMaskValor);
+
+document.getElementById("formOferta")?.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const form=e.currentTarget;
+  clearFieldErrors(form);
+
+  let vazio=false;
+  form.querySelectorAll("[data-field][required]").forEach(inp=>{
+    if(!inp.value.trim()){ inp.style.border="2px solid #c0392b"; vazio=true; }
+    else { inp.style.border="2px solid #59e1a1"; }
+  });
+
+  const vMask=form.querySelector('[data-field="valor"]')?.value||"";
+  if(!isPositiveMoneyBR(vMask)){ setFieldError(form,"valor","Informe um valor positivo."); vazio=true; }
+
+  const dIni=parseISO(form.querySelector('[data-field="data_inicio"]')?.value||"");
+  const dFim=parseISO(form.querySelector('[data-field="data_fim"]')?.value||"");
+  const dVal=parseISO(form.querySelector('[data-field="validade"]')?.value||"");
+  if(!dIni){ setFieldError(form,"data_inicio","Data inicial inválida."); vazio=true; }
+  if(!dFim){ setFieldError(form,"data_fim","Data final inválida."); vazio=true; }
+  if(dIni && dFim && dFim<dIni){ setFieldError(form,"data_fim","Fim não pode ser antes do início."); vazio=true; }
+  if(dVal && dIni && dVal<dIni){ setFieldError(form,"validade","Validade ≥ início."); vazio=true; }
+  if(dVal && dFim && dVal<dFim){ setFieldError(form,"validade","Validade ≥ fim."); vazio=true; }
+
+  if(vazio){ mostrarToast("Corrija os campos destacados.","erro"); return; }
+
+  const payload={};
+  form.querySelectorAll("[data-field]").forEach(inp=>{
+    const k=inp.getAttribute("data-field");
+    payload[k]=coerceValue(k, inp.value);
+  });
+
+  const btn=form.querySelector(".salvar"); btn.disabled=true; btn.textContent="Salvando...";
+  const res=await apiPost(ENDPOINTS.ofertas, payload);
+  btn.disabled=false; btn.textContent="Salvar";
+
+  if(res && (res.ok===true || res.ok==="true")){
+    mostrarToast("Promoção cadastrada!","sucesso");
+    form.reset();
+    clearFieldErrors(form);
+  }
+});
+</script>
+</body>
+</html>
