@@ -1,0 +1,414 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OfertMatch</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS específico da landing -->
+  <link rel="stylesheet" href="../css/index.css" />
+</head>
+
+<body>
+
+  <!-- ====== CABEÇALHO ====== -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">🛒</span>
+      <strong>Ofert</strong>Match
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Slogan -->
+    <section class="hero" aria-label="introdução">
+      <div class="logo_container">
+        <div class="slogan_text">
+          <h1>
+            As <span class="accent">melhores promoções</span>, no<br />
+            caminho mais rápido até você.
+          </h1>
+
+          <p>
+            Com o OfertMatch você encontra descontos incríveis e trajetos otimizados até o
+            mercado mais próximo.
+          </p>
+        </div>
+        <div class="logo">
+          <img class="imgLogo" src="../img/img_logo.jpeg" alt="imagem da logo">
+        </div>
+      </div>
+    </section>
+
+    <!-- Como funciona -->
+    <section class="how" aria-label="como funciona">
+      <h2>Como Funciona</h2>
+      <div class="steps">
+        <article class="step">
+          <div class="icon" aria-hidden="true">
+            <img src="../img/img_lupa.jpeg" alt="">
+          </div>
+          <h3>Pesquise</h3>
+          <p>Encontre produtos e promoções facilmente.</p>
+        </article>
+
+        <article class="step">
+          <div class="icon" aria-hidden="true">
+            <img src="../img/img_comprar.jpeg" alt="">
+          </div>
+          <h3>Compre</h3>
+          <p>Veja onde está mais barato em segundos.</p>
+        </article>
+
+        <article class="step">
+          <div class="icon" aria-hidden="true">
+            <img src="../img/img_localização.jpeg" alt="">
+          </div>
+          <h3>Chegue Rápido</h3>
+          <p>Descubra o trajeto mais curto até o mercado.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CARDS -->
+    <section class="cta" aria-label="cadastros">
+      <div class="cards">
+        <!-- Card CLIENTE -->
+        <div class="card">
+          <h4>Você deseja navegar pelas melhores promoções do dia a qualquer hora?</h4>
+          <p class="meta">Realize o seu cadastro aqui!</p>
+          <div class="actions">
+            <a class="btn" id="openPopupCli" href="#">Cadastro</a>
+            <!-- futuramente: login do cliente -->
+            <a class="link" href="#">Já tem cadastro? ENTRAR</a>
+          </div>
+        </div>
+
+        <!-- Card EMPRESA -->
+        <div class="card">
+          <h4>Você deseja se tornar um parceiro, cadastrando as melhores promoções?</h4>
+          <p class="meta">Realize o seu cadastro aqui!</p>
+          <div class="actions">
+            <a class="btn" id="openPopupEmp" href="#">Cadastro</a>
+            <a class="link" id="openPopupEntrar" href="popup_entrar.html">Já tem cadastro? ENTRAR</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         POPUP CADASTRO CLIENTE
+         ========================= -->
+    <dialog id="modalCliente">
+      <main class="container" id="caixaCliente">
+        <section class="card signup">
+          <div class="card-cap">
+            <h1>Cadastre-se</h1>
+          </div>
+
+          <form class="form" id="form_cliente" novalidate>
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field">
+              <label for="email2">Confirmar e-mail</label>
+              <input id="email2" name="email2" type="email" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field">
+              <label for="cep">CEP</label>
+              <input id="cep" name="cep" inputmode="numeric" maxlength="9" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field">
+              <label for="estado">Estado</label>
+              <select id="estado" name="estado" required>
+                <option value="" selected disabled>selecionar ▾</option>
+                <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                <option>SP</option><option>SE</option><option>TO</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="endereco">Endereço</label>
+              <input id="endereco" name="endereco" type="text" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field">
+              <label for="senha">Senha</label>
+              <input id="senha" name="senha" type="password" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field">
+              <label for="senha2">Confirmar senha</label>
+              <input id="senha2" name="senha2" type="password" placeholder="obrigatório" required>
+            </div>
+
+            <label class="checkline">
+              <input type="checkbox" name="lgpd" required>
+              <span class="check"></span>
+              Autorização de uso de dados pessoais
+            </label>
+
+            <!-- fechar popup -->
+            <button class="fecharCli" id="closepopupCli" aria-label="Fechar" type="button">×</button>
+
+            <!-- submit REAL do form -->
+            <button class="botao_cadastrar" id="btnCliente" type="submit">
+              Cadastrar
+            </button>
+          </form>
+        </section>
+      </main>
+    </dialog>
+
+    <!-- =========================
+         POPUP CADASTRO EMPRESA
+         ========================= -->
+    <dialog id="modalEmpresa">
+      <main class="container_emps" id="caixaEmpresa">
+        <section class="card signup_emps">
+          <div class="card-cabecalhoemps">
+            <h1>Cadastre-se</h1>
+          </div>
+
+          <form class="form_emps" id="form_empresa" novalidate>
+            <div class="field_emps">
+              <label for="email_emps">E-mail</label>
+              <input type="email" id="email_emps" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field_emps">
+              <label for="razaosocial_emps">Razão social</label>
+              <input type="text" id="razaosocial_emps" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field_emps">
+              <label for="cep_emps">CEP</label>
+              <input type="text" id="cep_emps" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field_emps">
+              <label for="estado_emps">Estado</label>
+              <select id="estado_emps" required>
+                <option value="" selected disabled>selecionar ▾</option>
+                <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                <option>SP</option><option>SE</option><option>TO</option>
+              </select>
+            </div>
+
+            <div class="field_emps">
+              <label for="endereco_emps">Endereço</label>
+              <input type="text" id="endereco_emps" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field_emps">
+              <label for="cnpj_emps">CNPJ</label>
+              <input type="text" id="cnpj_emps" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field_emps">
+              <label for="senha_emps">Senha</label>
+              <input type="password" id="senha_emps" placeholder="obrigatório" required>
+            </div>
+
+            <div class="field_emps">
+              <label for="senhaconfirmacao_emps">Confirmar senha</label>
+              <input type="password" id="senhaconfirmacao_emps" placeholder="obrigatório" required>
+            </div>
+
+            <label class="checkline_emps">
+              <input type="checkbox" id="lgpd_emps" required>
+              <span class="check_emps"></span>
+              Autorização de uso de dados pessoais
+            </label>
+
+            <!-- fechar popup -->
+            <button class="modal__close" id="closePopupEmp" aria-label="Fechar" type="button">×</button>
+
+            <!-- submit REAL do form -->
+            <button class="btncadastrar_emps" id="btnEmpresa" type="submit">
+              Cadastrar
+            </button>
+          </form>
+        </section>
+      </main>
+    </dialog>
+  </main>
+
+  <!-- SCRIPT GLOBAL (onde está BASE_URL, apiPost, etc.) -->
+  <script src="../js/app.js"></script>
+
+  <!-- SCRIPT ESPECÍFICO DA LANDING -->
+  <script>
+    // Endpoint de registro (usa /api/auth/register do seu app.py)
+    const REGISTER_URL = `${BASE_URL}/api/auth/register`;
+
+    // ====== POPUP CLIENTE ======
+    const modalCliente = document.getElementById("modalCliente");
+    const openPopupCli = document.getElementById("openPopupCli");
+    const closepopupCli = document.getElementById("closepopupCli");
+
+    openPopupCli?.addEventListener("click", (e) => {
+      e.preventDefault();
+      modalCliente?.showModal();
+    });
+
+    closepopupCli?.addEventListener("click", (e) => {
+      e.preventDefault();
+      modalCliente?.close();
+    });
+
+    // ====== POPUP EMPRESA ======
+    const modalEmpresa = document.getElementById("modalEmpresa");
+    const openPopupEmp = document.getElementById("openPopupEmp");
+    const closePopupEmp = document.getElementById("closePopupEmp");
+
+    openPopupEmp?.addEventListener("click", (e) => {
+      e.preventDefault();
+      modalEmpresa?.showModal();
+    });
+
+    closePopupEmp?.addEventListener("click", (e) => {
+      e.preventDefault();
+      modalEmpresa?.close();
+    });
+
+    /* ============================
+     CADASTRO DE CLIENTE
+  ============================ */
+
+  const btnCliente = document.getElementById("btnCliente");
+
+  btnCliente.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const email2 = document.getElementById("email2").value.trim();
+    const cep = document.getElementById("cep").value.trim();
+    const estado = document.getElementById("estado").value;
+    const endereco = document.getElementById("endereco").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+    const senha2 = document.getElementById("senha2").value.trim();
+    const autorizacao = document.querySelector("#form_cliente input[name=lgpd]").checked;
+
+    if (!email || !email2 || !cep || !estado || !endereco || !senha || !senha2) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+
+    if (email !== email2) {
+      alert("Os e-mails não coincidem!");
+      return;
+    }
+
+    if (senha !== senha2) {
+      alert("As senhas não coincidem!");
+      return;
+    }
+
+    const payload = {
+      email,
+      password: senha,
+      cep,
+      estado,
+      endereco,
+      autorizacao_dados: autorizacao,
+      tipo: "cliente"
+    };
+
+    const resp = await apiPost(ENDPOINTS.register, payload);
+
+    if (!resp || resp.ok === false) {
+      alert(resp?.msg || "Erro ao cadastrar usuário.");
+      return;
+    }
+
+    // Guarda tipo no navegador
+    localStorage.setItem("tipoUsuario", "cliente");
+    localStorage.setItem("usuarioEmail", email);
+
+    alert("Cadastro realizado com sucesso!");
+
+    window.location.href = "home_clientes.html";
+  });
+
+
+  /* ============================
+     CADASTRO DA EMPRESA
+  ============================ */
+
+  const btnEmpresa = document.getElementById("btnEmpresa");
+
+  btnEmpresa.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email_emps").value.trim();
+    const senha = document.getElementById("senha_emps").value.trim();
+    const senha2 = document.getElementById("senhaconfirmacao_emps").value.trim();
+    const razao = document.getElementById("razaosocial_emps").value.trim();
+    const cep = document.getElementById("cep_emps").value.trim();
+    const endereco = document.getElementById("endereco_emps").value.trim();
+    const cnpj = document.getElementById("cnpj_emps").value.trim();
+    const autorizacao = document.querySelector("#form_empresa input[type=checkbox]").checked;
+
+    if (!email || !senha || !senha2 || !razao || !cep || !endereco || !cnpj) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+
+    if (senha !== senha2) {
+      alert("As senhas não coincidem!");
+      return;
+    }
+
+    const payload = {
+      email,
+      password: senha,
+      razao_social: razao,
+      cep,
+      endereco,
+      cnpj,
+      autorizacao_dados: autorizacao,
+      tipo: "empresa"
+    };
+
+    const resp = await apiPost(ENDPOINTS.register, payload);
+
+    if (!resp || resp.ok === false) {
+      alert(resp?.msg || "Erro ao cadastrar empresa.");
+      return;
+    }
+
+    // Guarda tipo no navegador
+    localStorage.setItem("tipoUsuario", "empresa");
+    localStorage.setItem("usuarioEmail", email);
+
+    alert("Cadastro realizado com sucesso!");
+
+    window.location.href = "home_empresa.html";
+
+  });
+  </script>
+</body>
+</html>

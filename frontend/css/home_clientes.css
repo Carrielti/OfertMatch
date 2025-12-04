@@ -1,0 +1,945 @@
+  /* =======================
+   RESET BÁSICO
+   ======================= */
+
+/* Remove margens padrão de todos os elementos */
+* { margin: 0; /* Remove margens externas */ 
+  padding: 0; /* Remove espaçamento interno padrão */ 
+  box-sizing: border-box; /* Inclui padding e bordas dentro da largura total */ 
+  font-family: "Segoe UI", Arial, sans-serif; /* Define a fonte base do site */ 
+}
+
+/* Define aparência geral do corpo da página */
+body { background-color: #f5f5f5; /* Cor de fundo cinza claro */ 
+  color: #222; /* Cor de texto cinza escuro para legibilidade */ 
+}
+
+/* =======================
+   MENU LATERAL
+   ======================= */
+
+/* Define o contêiner principal do menu lateral */
+.menu-lateral { background-color: #092938; /* Fundo verde escuro */ 
+  color: white; /* Texto branco */ 
+  position: fixed; /* Fixa o menu na tela */ 
+  top: 0; /* Posiciona no topo da tela */ 
+  left: -250px; /* Começa fora da tela (invisível) */ 
+  width: 250px; /* Define a largura do menu lateral */ 
+  height: 100%; /* Ocupa toda a altura da janela */ 
+  padding: 20px; /* Espaçamento interno do conteúdo */ 
+  transition: left 0.3s ease; /* Animação suave ao abrir/fechar */ 
+  z-index: 10; /* Garante que o menu fique acima de outros elementos */ 
+}
+
+/* Define o logotipo dentro do menu lateral */
+.logo_menu { display: block; /* Torna o logo um bloco independente */ 
+  width: 100%; /* Faz o logo ocupar toda a largura disponível */ 
+  max-width: 210px; /* Define um tamanho máximo de 210px */ 
+  height: auto; /* Mantém a proporção da imagem */ 
+  margin: 4px auto 16px; /* Centraliza o logo e adiciona espaçamento abaixo */ 
+}
+
+/* Remove estilos padrão da lista dentro do menu */
+.menu-lateral ul { list-style: none; /* Remove marcadores (bolinhas) */ 
+  padding: 0; /* Remove padding padrão da lista */ 
+  margin: 0; /* Remove margens padrão */ 
+}
+
+/* Define espaçamento entre cada item da lista do menu */
+.menu-lateral li { margin: 6px 0; /* Adiciona espaço vertical entre os itens */ 
+}
+
+/* Define estilo dos links (botões) do menu lateral */
+.menu-lateral li a { display: flex; /* Alinha ícone e texto lado a lado */ 
+  align-items: center; /* Centraliza verticalmente o ícone e o texto */ 
+  gap: 10px; /* Espaçamento entre ícone e texto */ 
+  padding: 10px 12px; /* Espaçamento interno (vertical e horizontal) */ 
+  border-radius: 10px; /* Arredonda os cantos do botão */ 
+  color: #fff; /* Cor branca para o texto */ 
+  text-decoration: none; /* Remove sublinhado padrão */ 
+  font-weight: 600; /* Deixa o texto mais espesso (semibold) */ 
+  line-height: 1.2; /* Define altura da linha */ 
+  position: relative; /* Permite posicionar elementos filhos com posição absoluta (como a barra branca) */ 
+  transition: background 0.25s ease, color 0.25s ease; /* Transições suaves de cor e fundo */ 
+}
+
+/* Define o estilo dos ícones dentro do menu lateral */
+.icons_menu { width: 22px; /* Define largura fixa de 22px */ 
+  height: 22px; /* Define altura fixa de 22px */ 
+  flex: 0 0 22px; /* Impede que o ícone se estique */ 
+  object-fit: contain; /* Garante que a imagem mantenha proporção */ 
+  filter: none; /* Remove filtros aplicados por CSS ou navegador */ 
+}
+
+/* Altera aparência ao passar o mouse em cima de um link */
+.menu-lateral li a:hover { background-color: rgba(255, 255, 255, 0.08); /* Adiciona leve fundo branco translúcido */ 
+  color: #59e1a1; /* Muda a cor do texto para verde claro */ 
+}
+
+/* =======================
+   ITEM ATIVO (PÁGINA ATUAL)
+   ======================= */
+
+/* Estilo aplicado ao item do menu que está ativo (página atual) */
+.menu-lateral li a.active { background-color: rgba(255, 255, 255, 0.05); /* Fundo levemente branco */ 
+  color: #ffffff; /* Mantém texto branco */ 
+}
+
+/* Cria a barrinha branca à esquerda do item ativo */
+.menu-lateral li a.active::before { content: ""; /* Cria um pseudo-elemento vazio */ 
+  position: absolute; /* Posiciona a barrinha em relação ao link */ 
+  left: 0; /* Encosta na borda esquerda */ 
+  top: 0; /* Inicia no topo do item */ 
+  width: 4px; /* Define espessura da barrinha branca */ 
+  height: 100%; /* Faz a barra ocupar a altura total do item */ 
+  background-color: #ffffff; /* Define cor branca para a barra */ 
+  border-radius: 0 3px 3px 0; /* Arredonda os cantos direitos da barra */ 
+  transform: scaleY(0); /* Começa invisível (escala vertical 0) */ 
+  transform-origin: top; /* Define o topo como ponto de origem da animação */ 
+  transition: transform 0.3s ease; /* Suaviza o crescimento da barra */ 
+}
+
+/* Mostra a barrinha branca expandindo verticalmente */
+.menu-lateral li a.active::before { transform: scaleY(1); /* Faz a barra crescer de cima para baixo */ 
+}
+
+/* =======================
+   CABEÇALHO (HEADER)
+   ======================= */
+
+/* Define a barra superior (topo do site) */
+header { background-color: #ffffff; /* Cor de fundo branca */ 
+  display: flex; /* Organiza os elementos em linha */ 
+  justify-content: space-between; /* Espaça os elementos nas extremidades */ 
+  align-items: center; /* Centraliza verticalmente o conteúdo */ 
+  padding: 15px 20px; /* Espaçamento interno do cabeçalho */ 
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra sutil abaixo */ 
+  position: sticky; /* Faz o header "grudar" no topo ao rolar a página */ 
+  top: 0; /* Fixa no topo */ 
+}
+
+/* Define aparência dos botões no cabeçalho */
+header button { background: none; /* Remove cor de fundo padrão */ 
+  border: none; /* Remove bordas padrão */ 
+  font-size: 22px; /* Define tamanho grande para os ícones (☰ e ⚙) */ 
+  cursor: pointer; /* Mostra cursor de mãozinha ao passar o mouse */ 
+}
+
+/* Define o tamanho do logotipo no cabeçalho */
+.logo { height: 40px; /* Altura fixa do logotipo */ 
+}
+
+/* =======================
+   SEÇÃO DE BOAS-VINDAS
+   ======================= */
+
+/* Define o container da mensagem de boas-vindas */
+.boas-vindas { text-align: center; /* Centraliza o texto */ 
+  margin: 40px 0 20px; /* Espaçamento acima e abaixo da seção */ 
+}
+
+/* Estiliza o título principal da seção de boas-vindas */
+.boas-vindas h1 { color: #0d3b2e; /* Define o tom de verde escuro da marca */ 
+  margin-bottom: 10px; /* Adiciona espaçamento abaixo do título */ 
+}
+
+.boas-vindas p { 
+   /* Define o tom de verde escuro da marca */ 
+  margin-bottom: 10px; /* Adiciona espaçamento abaixo do título */ 
+}
+
+/* =======================
+   OVERLAY (FUNDO ESCURO DO MENU)
+   ======================= */
+
+/* Define o fundo escuro que aparece ao abrir o menu lateral */
+.overlay { position: fixed; /* Fixa na tela inteira */ 
+  top: 0; /* Começa no topo */ 
+  left: 0; /* Começa à esquerda */ 
+  width: 100%; /* Ocupa toda a largura da tela */ 
+  height: 100%; /* Ocupa toda a altura da tela */ 
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo preto translúcido */ 
+  display: none; /* Escondido por padrão */ 
+  z-index: 5; /* Fica abaixo do menu (menu tem z-index 10) */ 
+}
+
+/* ===== HERO (boas-vindas) ===== */
+.hero{
+  max-width: 980px;          /* mesma largura do bloco de busca */
+  margin: 18px auto 22px;    /* espaços superior e inferior */
+  padding: 0 16px;           /* respiro lateral mobile */
+  display: grid;
+  grid-template-columns: auto 1fr; /* logo | cartão */
+  align-items: center;
+  column-gap: 16px;
+}
+
+/* mini logo à esquerda */
+.hero-brand{
+  width: 130px;               /* ajuste conforme a imagem */
+  height: auto;
+  object-fit: contain;
+}
+
+/* cartão escuro com a mensagem */
+.hero-card{
+  background: #0b2f3a;       /* verde-azulado escuro do mockup */
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.08);
+}
+
+/* títulos e parágrafos com hierarquia */
+.hero-card h1{
+  font-size: 20px;           /* parecido com o mockup à esquerda */
+  font-weight: 800;
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+.hero-card p{
+  font-size: 16px;
+  opacity: .9;
+}
+
+/* linha divisória fina abaixo do hero (opcional, como no mockup) */
+.hero + .divider{
+  max-width: 100%;
+  border-top: 2px solid #dfe6ea;
+  margin: 16px 0;
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 680px){
+  .hero{
+    grid-template-columns: 1fr;   /* empilha logo acima do cartão */
+    row-gap: 12px;
+  }
+  .hero-brand{
+    width: 64px;
+    margin-left: 4px;
+  }
+  .hero-card h1{ font-size: 18px; }
+  .hero-card p{ font-size: 14px; }
+  .top-search{ padding: 0 12px; }
+}
+
+/* =========================
+   TEMA ESCURO (camada)
+   ========================= */
+/* Botão de tema (estilo simples, você pode melhorar no próprio style.css) */
+.btn-theme {
+  background: none;
+  border: 0;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+.btn-theme:hover { background: rgba(0,0,0,.06); }
+body.theme-dark .btn-theme:hover { background: rgba(255,255,255,.06); }
+
+/* Fundos e textos gerais */
+body.theme-dark {
+  background-color: #0e1419;   /* fundo global */
+  color: #e6edf3;              /* texto global */
+}
+body.theme-dark header {
+  background-color: #0b1015;
+  border-bottom-color: #1f2a33;
+  box-shadow: 0 2px 8px rgba(0,0,0,.35);
+}
+body.theme-dark .logo { filter: brightness(0.95) contrast(1.02); }
+
+/* Menu lateral */
+body.theme-dark .menu-lateral {
+  background-color: #0b2f3a; /* tom próximo ao seu verde-azulado escuro */
+  color: #f0f6fc;
+}
+body.theme-dark .menu-lateral li a {
+  color: #f0f6fc;
+}
+body.theme-dark .menu-lateral li a:hover {
+  background: rgba(255,255,255,.08);
+  color: #6ee7b7; /* verde claro */
+}
+body.theme-dark .menu-lateral li a.active {
+  background: rgba(255,255,255,.06);
+  color: #fff;
+}
+body.theme-dark .menu-lateral li a.active::before {
+  background: #fff;
+}
+
+/* Hero / cartões / caixas */
+body.theme-dark .hero-card,
+body.theme-dark .card,
+body.theme-dark .box-lista {
+  background: #0b2f3a;
+  color: #e6edf3;
+  box-shadow: 0 4px 14px rgba(0,0,0,.45);
+}
+body.theme-dark .divider { border-top-color: #1f2a33; }
+
+/* Inputs e botões dos modais */
+body.theme-dark .modal-content {
+  background: #0b2f3a;
+  color: #e6edf3;
+}
+body.theme-dark .modal-content input,
+body.theme-dark .modal-content select,
+body.theme-dark .top-search input {
+  background: #0f1720;
+  color: #e6edf3;
+  border: 1px solid #243242;
+}
+body.theme-dark .botoes button,
+body.theme-dark .lista-controles button {
+  background: #124f46;   /* botão preenchido */
+  color: #e6edf3;
+}
+body.theme-dark .cancelar {
+  background: #2b3340;   /* botão fantasma */
+  color: #e6edf3;
+}
+
+/* Tabelas */
+body.theme-dark .om-table thead th {
+  background: #0f1b23;
+  color: #e6edf3;
+}
+body.theme-dark .om-table tbody tr:hover {
+  background: #0f1b23;
+}
+body.theme-dark .om-table tbody td {
+  border-top-color: #1b2833;
+}
+
+/* Toast */
+body.theme-dark .toast.sucesso { background: #124f46; }
+body.theme-dark .toast.erro    { background: #8b2a21; }
+body.theme-dark .toast.aviso   { background: #b08a00; color: #0e1419; }
+
+/* ===== Painel lateral direito (estilo do mockup) ===== */
+.menu-opcoes{
+  position: fixed;
+  top: 0; right: -320px;
+  width: 320px; height: 100vh;
+  background: #082637;                 /* azul bem escuro */
+  box-shadow: -6px 0 24px rgba(0,0,0,.28);
+  
+  z-index: 1200;
+  transition: right .28s ease;
+  display: flex; flex-direction: column;
+}
+.menu-opcoes.open{ right: 0; }
+
+.menu-opcoes .op-header{
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  display: grid; place-items: center;
+}
+.menu-opcoes .op-logo{
+  width: 68%; max-width: 220px; height: auto; object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.25));
+}
+
+.menu-opcoes .op-list{
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 14px;
+}
+
+.op-item{
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
+  padding: 12px 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px;
+  color: #eaf3f8;
+  cursor: pointer;
+  transition: background .2s ease, transform .08s ease;
+}
+.op-item:hover{ background: rgba(255,255,255,.08); }
+.op-item:active{ transform: scale(.98); }
+
+.op-ico{
+  flex: 0 0 36px; height: 36px; width: 36px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(100% 100% at 30% 20%, #1bd39d 0%, #0aa874 100%);
+  color: #05201a; font-size: 18px;
+}
+#opAlterarTema .op-ico{
+  background: radial-gradient(100% 100% at 30% 20%, #26a7ff 0%, #1479d6 100%);
+  color: #031522;
+}
+#opSair .op-ico{
+  background: radial-gradient(100% 100% at 30% 20%, #ffd66b 0%, #f7b500 100%);
+  color: #241a00;
+}
+
+.op-txt{ font-weight: 600; }
+
+/* Dark mode do painel acompanha o tema geral */
+.theme-dark .menu-opcoes{
+  background: #061424;
+  border-left-color: #1e90ff;
+}
+
+/* (Se quiser escurecer o overlay quando o painel abre) */
+.menu-opcoes.open ~ .overlay{
+  display: block !important;
+  background-color: rgba(0,0,0,.55);
+}
+
+:root{
+  --bg:#f5f5f5; --ink:#222; /* etc */
+}
+.theme-dark{
+  --bg:#0b1220; --ink:#eaf3f8; /* mesmas variáveis em dark */
+}
+body{ background:var(--bg); color:var(--ink); }
+
+/* ===== MENU CONFIGURAÇÕES ===== */
+.menu-config {
+  position: fixed;
+  top: 70px;
+  right: -240px;
+  width: 220px;
+  background-color: #0e3f27;
+  color: #fff;
+  border-radius: 12px 0 0 12px;
+  box-shadow: -3px 0 10px rgba(0,0,0,0.3);
+  padding: 20px 10px;
+  transition: right 0.3s ease-in-out;
+  z-index: 999;
+}
+.menu-config.show {
+  right: 0;
+}
+.menu-config ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+.menu-config li {
+  padding: 10px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.3s;
+}
+.menu-config li:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+.logo_config {
+  width: 80%;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+/* =======================
+   AÇÕES PRINCIPAIS (CLIENTE)
+   ======================= */
+
+.home-actions {
+  max-width: 480px;
+  margin: 24px auto 40px;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Botões de ação centrais */
+.home-actions .cta {
+  display: block;
+  text-align: center;
+  padding: 14px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0d3b2e, #0b2f3a);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.home-actions .cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+  background: linear-gradient(135deg, #0f4a39, #0b3846);
+}
+
+.home-actions .cta:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Versão escura para combinar com o restante do tema */
+body.theme-dark .home-actions .cta {
+  background: linear-gradient(135deg, #0b2533, #093440);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+}
+
+body.theme-dark .home-actions .cta:hover {
+  background: linear-gradient(135deg, #0f3a4a, #0a4657);
+}
+
+:root {
+    --bg: #f5f6f7;
+    --panel: #e2e5e9;
+    --navy: #0f2940;
+    --green: #266b57;
+    --green-2: #1f5a49;
+    --text: #0f0f0f;
+    --muted: #6b7280;
+    --ring: rgba(15, 41, 64, .35);
+}
+
+.theme-dark {
+    --bg: #0e1216;
+    --panel: #141a20;
+    --text: #e5e7eb;
+    --muted: #9aa4b2;
+    --navy: #0b2539;
+    --green: #2a7a63;
+    --green-2: #246652;
+    --ring: rgba(42, 122, 99, .4);
+}
+
+/* base */
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.4 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* topbar */
+.topbar {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.theme-dark .topbar {
+    background: #0f1720;
+    border-color: #0b1220
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700
+}
+
+.brand-icon {
+    filter: grayscale(.1)
+}
+
+.top-actions {
+    display: flex;
+    gap: 8px
+}
+
+.icon-btn {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    padding: 6px 8px;
+    border-radius: 8px;
+}
+
+.icon-btn:hover {
+    background: rgba(0, 0, 0, .05)
+}
+
+.theme-dark .icon-btn:hover {
+    background: rgba(255, 255, 255, .06)
+}
+
+.search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+}
+
+.search-input {
+    flex: 1;
+    height: 38px;
+    border-radius: 10px;
+    border: 0;
+    background: var(--panel);
+    outline: 2px solid transparent;
+    padding: 0 12px;
+    box-shadow: inset 0 0 0 2px rgba(15, 41, 64, .1);
+}
+
+.search-input:focus {
+    outline-color: var(--ring)
+}
+
+.search-ico {
+    opacity: .7
+}
+
+/* hero/logo */
+.hero-logo {
+    text-align: center;
+    padding: 8px 16px 0
+}
+
+.logo {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: .2px
+}
+
+.logo-ofert {
+    color: var(--green)
+}
+
+.logo-match {
+    color: var(--navy)
+}
+
+.pill {
+    display: inline-block;
+    margin: 16px auto 8px;
+    padding: 10px 18px;
+    color: #fff;
+    background: var(--navy);
+    border-radius: 24px;
+}
+
+/* home buttons */
+.home-actions {
+    display: grid;
+    gap: 18px;
+    padding: 18px 16px;
+    max-width: 560px;
+    margin: 0 auto
+}
+
+.cta {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    background: var(--green);
+    border-radius: 18px;
+    padding: 18px;
+    position: relative;
+    box-shadow: 0 6px 0 #9aa4b2, 0 0 0 2px rgba(0, 0, 0, .05) inset;
+}
+
+.cta:hover {
+    background: var(--green-2)
+}
+
+/* section titles */
+.title-row {
+    display: flex;
+    align-items: end;
+    gap: 12px;
+    padding: 8px 16px
+}
+
+.title-row h1 {
+    margin: 0;
+    font-size: 34px;
+    color: var(--green)
+}
+
+.tag {
+    color: var(--muted);
+    font-size: 14px
+}
+
+/* grid de produtos */
+.grid {
+    display: grid;
+    gap: 16px;
+    padding: 12px 16px 28px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+.card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 10px;
+    position: relative;
+    box-shadow: 0 1px 0 #e6e6e6, 0 8px 24px rgba(0, 0, 0, .05);
+}
+
+.theme-dark .card {
+    background: #11161b;
+    box-shadow: 0 0 0 1px #1f2937
+}
+
+.card-thumb {
+    height: 120px;
+    border-radius: 12px;
+    background: #d1d5db;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
+
+.card-title {
+    font-size: 13px;
+    color: #222;
+    min-height: 36px
+}
+
+.theme-dark .card-title {
+    color: #e5e7eb
+}
+
+.card-price {
+    margin-top: 6px;
+    font-weight: 800
+}
+
+.btn-fab {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 0;
+    background: #e6ecea;
+    cursor: pointer;
+    font-size: 18px;
+    color: #0f2940;
+}
+
+.btn-fab:hover {
+    transform: scale(1.06)
+}
+
+/* drawers/gavetas */
+.backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .35);
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s;
+    z-index: 39;
+}
+
+.backdrop.show {
+    opacity: 1;
+    pointer-events: auto
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 300px;
+    background: var(--navy);
+    color: #e5eef4;
+    transform: translateX(100%);
+    right: 0;
+    z-index: 40;
+    transition: transform .25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer.wide {
+    width: 360px
+}
+
+.drawer.show {
+    transform: translateX(0)
+}
+
+.drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.drawer-header .title {
+    font-size: 28px;
+    font-weight: 800;
+    display: flex;
+    gap: 8px;
+    align-items: center
+}
+
+.drawer-body {
+    padding: 14px 16px;
+    overflow: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.drawer-footer {
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid rgba(255, 255, 255, .1)
+}
+
+.nav-item {
+    display: block;
+    color: #e5eef4;
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, .12)
+}
+
+.icon-btn.close {
+    color: #fff;
+    background: rgba(255, 255, 255, .1)
+}
+
+.brand.big {
+    font-size: 22px
+}
+
+/* lista itens */
+.list-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+    background: rgba(255, 255, 255, .06);
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, .15);
+    padding: 6px 8px;
+    border-radius: 999px;
+}
+
+.qty button {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer
+}
+
+.rem {
+    margin-left: 8px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .5);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 8px;
+    cursor: pointer
+}
+
+/* inputs/btns */
+.btn,
+.btn-secondary,
+.btn-outline {
+    appearance: none;
+    border: 0;
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn {
+    background: var(--green);
+    color: #fff
+}
+
+.btn:hover {
+    background: var(--green-2)
+}
+
+.btn-secondary {
+    background: #124a3d;
+    color: #fff
+}
+
+.btn-outline {
+    background: transparent;
+    color: #e5eef4;
+    border: 2px solid rgba(255, 255, 255, .5)
+}
+
+.route-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+}
+
+.route-input {
+    flex: 1;
+    min-width: 220px;
+    height: 40px;
+    border-radius: 12px;
+    border: 0;
+    background: var(--panel);
+    padding: 0 12px;
+    box-shadow: inset 0 0 0 2px rgba(15, 41, 64, .1);
+}
+
+.map-wrap {
+    height: 60vh;
+    margin: 8px 0
+}
+
+.map-wrap iframe {
+    border: 0;
+    width: 100%;
+    height: 100%
+}
+
+/* util */
+@media (min-width:900px) {
+    .grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr))
+    }
+}

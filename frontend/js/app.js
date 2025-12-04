@@ -1,3 +1,9 @@
+// script.js - unificado (legado + app.js)
+// Toda a lógica principal agora está aqui.
+// Não é mais necessário usar app.js separado.
+console.warn("script.js unificado: inclui lógica antiga + app.js.");
+
+
 /* =========================
    CONFIG BÁSICA
    ========================= */
@@ -18,11 +24,13 @@ const ENDPOINTS = {
   produtos: `${BASE_URL}/api/produtos`,
   ofertas:  `${BASE_URL}/api/ofertas`,
   health:   `${BASE_URL}/api/health`,
+  register: `${BASE_URL}/api/auth/register`,
+  login:    `${BASE_URL}/api/auth/login`,
 };
 
 
 /* =========================
-   MENU LATERAL (abrir/fechar)
+   MENU LATERAL (abrir/fechar) - legado (menuLateral + overlay)
    ========================= */
 function abrirMenu(){
   if (!menuLateral || !overlay || !btnMenu) return;
@@ -42,9 +50,15 @@ function fecharMenu(){
 btnMenu?.addEventListener("click", () => {
   menuAberto ? fecharMenu() : abrirMenu();
 });
-overlay?.addEventListener("click", fecharMenu);
+
+overlay?.addEventListener("click", () => {
+  if (menuAberto) fecharMenu();
+});
 document.addEventListener("keydown", (e)=>{
-  if(e.key === "Escape" && menuAberto){ fecharMenu(); btnMenu?.focus(); }
+  if(e.key === "Escape" && menuAberto){
+    fecharMenu();
+    btnMenu?.focus();
+  }
 });
 
 
@@ -147,7 +161,12 @@ async function apiPost(url, body) {
       body: JSON.stringify(body),
     });
     const txt = await r.text();
-    let j; try { j = JSON.parse(txt); } catch { j = { ok:false, msg: txt || "Resposta não-JSON" }; }
+    let j; 
+    try { 
+      j = JSON.parse(txt); 
+    } catch { 
+      j = { ok:false, msg: txt || "Resposta não-JSON" }; 
+    }
     if (!r.ok || j.ok === false) throw new Error(j.msg || `Erro HTTP ${r.status}`);
     return j;
   } catch (e) {
@@ -385,41 +404,37 @@ document.addEventListener("DOMContentLoaded", checkApi);
 
 
 /* =========================
-   THEME: toggle + persistência
+   THEME (unificado, baseado no app.js)
    ========================= */
-(function temaEscuro() {
-  const BTN_ID = "btnTheme";
-  const STORAGE_KEY = "om-theme"; // 'light' | 'dark'
+const body = document.body;
+const THEME_KEY = "theme"; // 'dark' | 'light'
 
-  function setBtnIcon(isDark) {
-    const btn = document.getElementById(BTN_ID);
-    if (!btn) return;
-    btn.textContent = isDark ? "☀️" : "🌙";
-    btn.setAttribute("aria-label", isDark ? "Ativar tema claro" : "Ativar tema escuro");
-    btn.setAttribute("title", isDark ? "Tema claro" : "Tema escuro");
-    btn.setAttribute("aria-pressed", String(isDark));
+// aplica tema salvo
+(function aplicarTemaInicial() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme === "dark") {
+    body.classList.add("theme-dark");
+    body.classList.remove("theme-light");
+  } else if (savedTheme === "light") {
+    body.classList.add("theme-light");
+    body.classList.remove("theme-dark");
   }
-
-  function applyTheme(mode) {
-    const isDark = mode === "dark";
-    document.body.classList.toggle("theme-dark", isDark);
-    setBtnIcon(isDark);
-  }
-
-  const saved = localStorage.getItem(STORAGE_KEY);
-  const preferDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const initial = saved || (preferDark ? "dark" : "light");
-  applyTheme(initial);
-
-  document.addEventListener("click", (e) => {
-    const t = e.target;
-    if (t && t.id === BTN_ID) {
-      const isDark = document.body.classList.toggle("theme-dark");
-      localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
-      setBtnIcon(isDark);
-    }
-  });
 })();
+
+const btnTheme = document.getElementById("btnTheme");
+const toggleThemeBtn = document.getElementById("toggleTheme");
+const opAlterarTema = document.getElementById("opAlterarTema");
+
+function toggleTheme() {
+  const isDark = !body.classList.contains("theme-dark");
+  body.classList.toggle("theme-dark", isDark);
+  body.classList.toggle("theme-light", !isDark);
+  localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+}
+
+btnTheme?.addEventListener("click", toggleTheme);
+toggleThemeBtn?.addEventListener("click", toggleTheme);
+opAlterarTema?.addEventListener("click", toggleTheme);
 
 
 /* =========================
@@ -433,8 +448,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // se quiser: if (page === "home-empresa") carregarEmpresas() etc.
 });
 
+
 /* =========================
-   PAINEL DIREITO (Configurações ⚙)
+   PAINEL DIREITO (Configurações ⚙ / menuOpcoes ou menuConfig)
    ========================= */
 const btnConfig  = document.getElementById("btnConfig");
 
@@ -485,32 +501,6 @@ document.addEventListener("keydown", (e) => {
 
 
 /* =========================
-   TEMA ESCURO (Persistente em TODAS as páginas)
-   ========================= */
-const THEME_KEY = "om-theme";
-
-function aplicarTemaInicial() {
-  const saved = localStorage.getItem(THEME_KEY);
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const startDark = saved ? saved === "dark" : prefersDark;
-  document.body.classList.toggle("theme-dark", startDark);
-}
-
-function toggleTheme() {
-  const agoraEscuro = !document.body.classList.contains("theme-dark");
-  document.body.classList.toggle("theme-dark", agoraEscuro);
-  localStorage.setItem(THEME_KEY, agoraEscuro ? "dark" : "light");
-}
-
-// Aplica o tema salvo ao carregar
-aplicarTemaInicial();
-
-// Vincula botão de alternar tema (compatível com ambos os tipos)
-document.getElementById("opAlterarTema")?.addEventListener("click", toggleTheme);
-document.getElementById("toggleTheme")?.addEventListener("click", toggleTheme);
-
-
-/* =========================
    AÇÕES DO MENU DIREITO
    ========================= */
 document.getElementById("opPerfil")?.addEventListener("click", () => {
@@ -520,4 +510,233 @@ document.getElementById("opPerfil")?.addEventListener("click", () => {
 document.getElementById("opSair")?.addEventListener("click", () => {
   mostrarToast("Saindo…");
   // Exemplo: window.location.href = "login.html";
+});
+
+
+/* =========================
+   GAVETAS / DRAWERS (do app.js)
+   ========================= */
+
+// backdrop das gavetas
+const backdrop = document.getElementById("backdrop");
+
+function openDrawer(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add("show");
+  if (backdrop) backdrop.classList.add("show");
+}
+
+function closeDrawer(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove("show");
+  if (!document.querySelector(".drawer.show") && backdrop) {
+    backdrop.classList.remove("show");
+  }
+}
+
+// botões com data-close
+document.querySelectorAll("[data-close]").forEach(b => {
+  b.addEventListener("click", () => closeDrawer(b.dataset.close));
+});
+
+// clique no backdrop fecha todas as gavetas
+backdrop?.addEventListener("click", () => {
+  document.querySelectorAll(".drawer.show").forEach(d => d.classList.remove("show"));
+  backdrop.classList.remove("show");
+});
+
+// botão de menu que abre drawerMenu
+const btnMenuDrawer = document.getElementById("btnMenu");
+btnMenuDrawer?.addEventListener("click", () => {
+  if (document.getElementById("drawerMenu")) {
+    openDrawer("drawerMenu");
+  } else {
+    // se não tiver drawerMenu, cai no menu lateral legado (já tratado acima)
+  }
+});
+
+// botão "Minha Lista" abre drawerLista
+const btnLista = document.getElementById("btnLista");
+btnLista?.addEventListener("click", () => openDrawer("drawerLista"));
+
+/* ======= Fechamento de drawers por tecla Esc ======= */
+document.addEventListener("keydown", (e)=>{
+  if (e.key === "Escape"){
+    document.querySelectorAll(".drawer.show").forEach(d=>d.classList.remove("show"));
+    if (backdrop) backdrop.classList.remove("show");
+  }
+});
+
+
+/* =========================
+   CATÁLOGO E CARRINHO (do app.js)
+   ========================= */
+const PRODUTOS = [
+  {id:"p01", nome:"Pão Bisnaguinha Tradicional Qualita Pacote 300g", preco:6.99, emoji:"🥖"},
+  {id:"p02", nome:"Requeijão Cremoso TIROLEZ Copo 200g", preco:8.19, emoji:"🧀"},
+  {id:"p03", nome:"Suco Uva e Maçã Natural One 900ml", preco:14.44, emoji:"🧃"},
+  {id:"p04", nome:"Coca-Cola Orig e Fanta 2l cada", preco:19.49, emoji:"🥤"},
+  {id:"p05", nome:"Leite UHT Integral 1L", preco:4.89, emoji:"🥛"},
+  {id:"p06", nome:"Contra Filé em Bife Bandeja 600g", preco:38.34, emoji:"🥩"},
+  {id:"p07", nome:"Pizza Napolitana Perdigão 460g", preco:18.29, emoji:"🍕"},
+  {id:"p08", nome:"Cerveja Heineken Lata Sleek 350ml", preco:5.99, emoji:"🍺"},
+];
+
+function loadCart(){
+  try{ 
+    return JSON.parse(localStorage.getItem("cart") || "{}"); 
+  }catch{ 
+    return {}; 
+  }
+}
+function saveCart(cart){ 
+  localStorage.setItem("cart", JSON.stringify(cart)); 
+}
+function addToCart(id){
+  const cart = loadCart();
+  cart[id] = (cart[id] || 0) + 1;
+  saveCart(cart);
+  renderLista();
+}
+function changeQty(id, delta){
+  const cart = loadCart();
+  cart[id] = Math.max(0, (cart[id] || 0) + delta);
+  if(cart[id] === 0) delete cart[id];
+  saveCart(cart); 
+  renderLista();
+}
+function removeItem(id){
+  const cart = loadCart(); 
+  delete cart[id]; 
+  saveCart(cart); 
+  renderLista();
+}
+function clearCart(){ 
+  saveCart({}); 
+  renderLista(); 
+}
+
+/* ======= Grid de Produtos (Ofertas mockadas para home cliente) ======= */
+const grid = document.getElementById("gridProdutos");
+if (grid){
+  grid.innerHTML = PRODUTOS.map(p=>`
+    <article class="card">
+      <div class="card-thumb">${p.emoji}</div>
+      <div class="card-title">${p.nome}</div>
+      <div class="card-price">R$ ${p.preco.toFixed(2).replace(".", ",")}</div>
+      <button class="btn-fab" aria-label="adicionar" data-add="${p.id}">＋</button>
+    </article>
+  `).join("");
+  grid.addEventListener("click", (e)=>{
+    const id = e.target.dataset.add;
+    if (id) addToCart(id);
+  });
+}
+
+/* ======= Gaveta Minha Lista ======= */
+const listaItens = document.getElementById("listaItens");
+function renderLista(){
+  if (!listaItens) return;
+  const cart = loadCart();
+  const ids = Object.keys(cart);
+  if (ids.length === 0){
+    listaItens.innerHTML = `<p>Seu carrinho está vazio.</p>`;
+    return;
+  }
+  listaItens.innerHTML = ids.map(id=>{
+    const p = PRODUTOS.find(x=>x.id===id) || {nome:"Item", preco:0, emoji:"🛍️"};
+    const q = cart[id];
+    return `
+      <div class="list-item">
+        <div>${p.emoji}</div>
+        <div>
+          <div style="font-weight:700">${p.nome}</div>
+          <small>R$ ${p.preco.toFixed(2).replace(".", ",")}</small>
+        </div>
+        <div class="qty">
+          <button aria-label="diminuir" data-qminus="${id}">−</button>
+          <span>${q}</span>
+          <button aria-label="aumentar" data-qplus="${id}">＋</button>
+          <button class="rem" data-remove="${id}">remover</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+listaItens?.addEventListener("click", (e)=>{
+  if (e.target.dataset.qplus)  changeQty(e.target.dataset.qplus, +1);
+  if (e.target.dataset.qminus) changeQty(e.target.dataset.qminus, -1);
+  if (e.target.dataset.remove) removeItem(e.target.dataset.remove);
+});
+
+const btnLimpar = document.getElementById("btnLimpar");
+btnLimpar?.addEventListener("click", clearCart);
+
+// render inicial se a gaveta existir
+renderLista();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const tipo = localStorage.getItem("tipoUsuario"); // "cliente" ou "empresa"
+  const linkInicio = document.getElementById("linkInicio");
+  const itensEmpresa = document.querySelectorAll(".menu-empresa");
+  
+  if (tipo === "cliente") {
+    linkInicio.href = "home_clientes.html";
+  } else {
+    // padrão: empresa, ou caso ainda não esteja definido
+    linkInicio.href = "home_empresa.html";
+  }
+  // 2) Esconde ou mostra os itens exclusivos da empresa
+  if (tipo === "cliente") {
+    itensEmpresa.forEach(li => li.style.display = "none");
+  } else {
+    itensEmpresa.forEach(li => li.style.display = "");
+  }
+
+  const btnOfertasDia  = document.getElementById("btnOfertasDia");
+
+  // função auxiliar pra decidir pra onde ir
+  function irParaOfertas() {
+    if (tipo === "empresa") {
+      // caminho para a tela de ofertas do CLIENTE
+      window.location.href = "lista_ofertas.html";      // ajuste se estiver em outra pasta
+    } else {
+      // caminho para a tela de ofertas da EMPRESA
+      window.location.href = "ofertas.html";      // ajuste se precisar de ../
+    }
+  }
+
+  if (btnOfertasDia) {
+    btnOfertasDia.addEventListener("click", (e) => {
+      e.preventDefault();
+      irParaOfertas();
+    });
+  }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btnLista = document.getElementById("btnLista");
+
+  if (btnLista) {
+    btnLista.addEventListener("click", (e) => {
+      e.preventDefault();
+      openDrawer("drawerLista"); // abre a gaveta da lista
+    });
+  }
+});
+
+  // Se NÃO for empresa, esconde tudo que é só da empresa
+  if (tipo !== "empresa") {
+    itensEmpresa.forEach(li => {
+      li.style.display = "none";
+    });
+  } else {
+    // empresa logada → mostra normalmente
+    itensEmpresa.forEach(li => {
+      li.style.display = "";
+    });
+  }
+
 });

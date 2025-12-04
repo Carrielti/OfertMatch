@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar — OfertMatch</title>
+
+  <link rel="stylesheet" href="../css/index.css">
+</head>
+
+<body>
+
+  <main class="container" style="max-width:420px; margin:40px auto;">
+    
+    <section class="card signup">
+      <div class="card-cap">
+        <h1>Entrar</h1>
+      </div>
+
+      <form id="form_login" class="form">
+        
+        <div class="field">
+          <label for="loginEmail">E-mail</label>
+          <input type="email" id="loginEmail" placeholder="obrigatório" required>
+        </div>
+
+        <div class="field">
+          <label for="loginSenha">Senha</label>
+          <input type="password" id="loginSenha" placeholder="obrigatório" required>
+        </div>
+
+        <button id="btnLogin" type="submit" class="botao_cadastrar">
+          Entrar
+        </button>
+
+      </form>
+
+      <div style="text-align:center; margin-top:10px;">
+        <a href="index.html" class="link">← Voltar</a>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="../js/app.js"></script>
+
+  <script>
+    const LOGIN_URL = `${BASE_URL}/api/auth/login`;
+
+    const formLogin = document.getElementById("form_login");
+
+    formLogin.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("loginEmail").value.trim();
+      const senha = document.getElementById("loginSenha").value.trim();
+
+      if (!email || !senha) {
+        alert("Informe email e senha!");
+        return;
+      }
+
+      const payload = {
+        email,
+        password: senha
+      };
+
+      try {
+        const resp = await apiPost(LOGIN_URL, payload);
+
+        if (!resp || resp.ok === false) {
+          alert(resp?.msg || "Email ou senha inválidos.");
+          return;
+        }
+
+        // LOGIN OK → salva dados locais
+        localStorage.setItem("usuarioEmail", resp.email);
+        localStorage.setItem("usuarioID", resp.user_id);
+        localStorage.setItem("tipoUsuario", resp.tipo);   // cliente | empresa
+
+        // redirecionamento automático baseado no tipo
+        if (resp.tipo === "empresa") {
+          window.location.href = "home_empresa.html";
+        } else {
+          window.location.href = "home_clientes.html";
+        }
+
+      } catch (err) {
+        console.error("Erro no login:", err);
+        alert("Erro ao conectar com o servidor.");
+      }
+    });
+  </script>
+
+</body>
+</html>

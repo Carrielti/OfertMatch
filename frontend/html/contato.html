@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contato - OfertMatch</title>
+
+  <!-- CSS global (menu, header, estrutura geral) -->
+  <link rel="stylesheet" href="../css/styles.css" />
+
+  <!-- CSS específico da página Contato -->
+  <link rel="stylesheet" href="../css/contato.css" />
+</head>
+
+<body data-page="contato">
+
+  <!-- ====== MENU LATERAL ESQUERDO (drawer) ====== -->
+  <nav class="menu-lateral" id="menuLateral" role="navigation" aria-label="Menu lateral">
+    <img src="../img/Logo_Menor.png" alt="OfertMatch" class="logo_menu" />
+    <ul>
+      <li>
+        <a href="#" id="linkInicio">
+          <img src="../img/icon_home.png" alt="" class="icons_menu">
+          <span>Início</span>
+        </a>
+      </li>
+      <li class="menu-empresa">
+      <a href="lista_ofertas.html" id="linkListaOfertas">
+        <img src="../img/icon_promocao.png" alt="" class="icons_menu">
+        <span>Lista de ofertas</span>
+      </a>
+    </li>
+      <li class="menu-empresa">
+      <a href="lista_produtos.html" id="linkListaProdutos">
+        <img src="../img/icon_lista_produtos.png" alt="" class="icons_menu">
+        <span>Lista de Produtos</span>
+      </a>
+    </li>
+      <li>
+        <a href="endereco.html">
+          <img src="../img/icon_localizacao.png" alt="" class="icons_menu">
+          <span>Endereço</span>
+        </a>
+      </li>
+      <li>
+        <a href="sobre.html">
+          <img src="../img/icon_sobre.png" alt="" class="icons_menu">
+          <span>Sobre</span>
+        </a>
+      </li>
+      <li>
+        <a href="contato.html">
+          <img src="../img/icon_contato.png" alt="" class="icons_menu">
+          <span>Contato</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- OVERLAY ÚNICO PARA MENU E PAINEL DIREITO -->
+  <div class="overlay" id="overlay" aria-hidden="true"></div>
+
+  <!-- ===== MENU LATERAL DIREITO (painel de opções) ===== -->
+  <aside class="menu-opcoes" id="menuOpcoes" aria-label="Opções" aria-hidden="true">
+    <div class="op-header">
+      <img src="../img/Logo_Menor.png" alt="OfertMatch" class="op-logo" />
+    </div>
+
+    <nav class="op-list">
+      <button type="button" class="op-item" id="opPerfil">
+        <span class="op-ico">👤</span>
+        <span class="op-txt">Perfil</span>
+      </button>
+
+      <button type="button" class="op-item" id="opAlterarTema">
+        <span class="op-ico">🌓</span>
+        <span class="op-txt">Alterar Tema</span>
+      </button>
+
+      <button type="button" class="op-item" id="opSair">
+        <span class="op-ico">🚪</span>
+        <span class="op-txt">Sair</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- ===== CABEÇALHO ===== -->
+  <header>
+    <button id="btnMenu" aria-controls="menuLateral" aria-expanded="false" aria-label="Abrir menu lateral">☰</button>
+
+    <img src="../img/Logo_Menor.png" alt="OfertMatch" class="logo" />
+
+    <div class="header-actions">
+      <button id="btnTheme" class="btn-theme" aria-pressed="false" aria-label="Ativar tema escuro" title="Tema escuro">🌙</button>
+      <button id="btnConfig" aria-label="Abrir opções">⚙</button>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="contato-main">
+    <h1>Entre em Contato</h1>
+    <p>Envie uma mensagem para a equipe do OfertMatch. Retornaremos o mais breve possível!</p>
+
+    <form id="formContato">
+      <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+      <input type="email" id="email" name="email" placeholder="Seu e-mail" required>
+      <textarea id="mensagem" name="mensagem" rows="4" placeholder="Digite sua mensagem..." required></textarea>
+      <button type="submit" class="btn-enviar">Enviar</button>
+    </form>
+
+    <footer>
+      <div class="social">
+        <a href="#" aria-label="Instagram">🌐</a>
+        <a href="#" aria-label="LinkedIn">💼</a>
+        <a href="#" aria-label="GitHub">💻</a>
+      </div>
+      <p>© 2025 OfertMatch — Todos os direitos reservados.</p>
+    </footer>
+  </main>
+
+  <!-- SCRIPT PRINCIPAL -->
+  <script src="../js/app.js"></script>
+
+  <!-- Simulação de envio -->
+  <script>
+    document.getElementById("formContato").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+/* ============================
+   ESTILO DA PÁGINA ENDEREÇO
+============================ */
+
+.endereco-main {
+  max-width: 800px;
+  margin: 80px auto;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: background 0.3s;
+}
+
+body.theme-dark .endereco-main {
+  background: rgba(20, 30, 40, 0.9);
+  box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+}
+
+.endereco-main h1 {
+  text-align: center;
+  color: #1d7a4e;
+  margin-bottom: 20px;
+}
+
+.info-msg {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Formulário */
+.endereco-main form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.endereco-main label {
+  font-weight: 600;
+  text-align: left;
+}
+
+.endereco-main input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.endereco-main input:focus {
+  border-color: #1d7a4e;
+  box-shadow: 0 0 5px rgba(29,122,78,0.3);
+}
+
+.btn-salvar {
+  background: #1d7a4e;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.btn-salvar:hover {
+  background: #17663f;
+}
+
+@media (max-width: 600px) {
+  .endereco-main {
+    margin: 60px 15px;
+  }
+}
